@@ -1,23 +1,32 @@
 angular.module('katarinaApp', ['akoenig.deckgrid'])
 .controller('katarinaCtrl', function($scope, $http, $sce) {
-	$http.jsonp('http://api.tumblr.com/v2/blog/katarinaio.tumblr.com/posts?callback=JSON_CALLBACK')
-	.success(function(response) {
-		var posts = response['response']['posts'];
+  var fetchPosts = function() {
+    var urlBase = 'http://api.tumblr.com/v2/blog/katarinaio.tumblr.com/posts?callback=JSON_CALLBACK&offset=';
+    
+  	$http.jsonp(urlBase + $scope.allPosts.length)
+  	.success(function(response) {
+  		var posts = response['response']['posts'];
 
-		angular.forEach(posts, function(post) {
-			post.body = $sce.trustAsHtml(post.caption);
-		  post.rank = 0.5 - Math.random();
+  		angular.forEach(posts, function(post) {
+  			post.body = $sce.trustAsHtml(post.caption);
+  		  post.rank = 0.5 - Math.random();
       
-      if (post.type == 'photo') {
-        post.image = post['photos'][0]['alt_sizes'][1]['url'];
-      } else if (post.type == 'video') {
-        post.video = $sce.trustAsHtml(post['player'][2]['embed_code']);
-      }
-		});
+        if (post.type == 'photo') {
+          post.image = post['photos'][0]['alt_sizes'][1]['url'];
+        } else if (post.type == 'video') {
+          post.video = $sce.trustAsHtml(post['player'][2]['embed_code']);
+        }
+  		});
 
-		$scope.allPosts = posts;
-  	$scope.updateFacet($scope.facet);
-	});
+  		$scope.allPosts = $scope.allPosts.concat(posts);
+      
+      if ($scope.allPosts.length < response['response']['total_posts']) {
+        fetchPosts();
+      } else {
+        $scope.updateFacet($scope.facet);
+      }
+  	});
+  };
 
 	$scope.facets = [
 		{
@@ -49,7 +58,9 @@ angular.module('katarinaApp', ['akoenig.deckgrid'])
   	];
     
   	$scope.facet = $scope.facets[0];
+    $scope.allPosts = [];
     $scope.showingPosts = [];
+    fetchPosts();
     
     $scope.updateFacet = function(facet) {
       $scope.facet = facet;
