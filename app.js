@@ -14,9 +14,10 @@ angular.module('katarinaApp', ['akoenig.deckgrid'])
         if (post.type == 'photo') {
           post.image = post['photos'][0]['alt_sizes'][1]['url'];
         } else if (post.type == 'video') {
-          post.video = $sce.trustAsHtml(post['player'][2]['embed_code']);
+          post.videoSrc = $sce.trustAsResourceUrl(post.video_url);
+          post.posterSrc = $sce.trustAsResourceUrl(post.thumbnail_url);
         }
-  		});
+   		});
 
   		$scope.allPosts = $scope.allPosts.concat(posts);
       

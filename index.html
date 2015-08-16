@@ -79,7 +79,9 @@
     <div deckgrid source="showingPosts" class="posts deckgrid">
       <div class="post">
         <img ng-src="{{ card.image }}" ng-show="card.image" />
-        <div ng-bind-html="card.video" ng-show="card.video"></div>
+        <div class="post-video" ng-show="card.videoSrc">
+          <video ng-src="{{ card.videoSrc }}" poster="{{ card.posterSrc }}" controls></video>
+        </div>
         <div ng-bind-html="card.body" class="post-text" ng-show="card.body"></div>
       </div>
     </div>

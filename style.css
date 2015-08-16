@@ -15,7 +15,8 @@ a {
   font-weight: bold;
 }
 
-img {
+img,
+video {
   width: 100%;
 }
 
