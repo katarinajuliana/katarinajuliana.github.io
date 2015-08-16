@@ -60,8 +60,6 @@ angular.module('katarinaApp', ['akoenig.deckgrid'])
   	$scope.facet = $scope.facets[0];
     $scope.allPosts = [];
     $scope.showingPosts = [];
-    fetchPosts();
-    
     $scope.updateFacet = function(facet) {
       $scope.facet = facet;
       
@@ -78,4 +76,6 @@ angular.module('katarinaApp', ['akoenig.deckgrid'])
       document.getElementsByClassName('posts')[0].scrollTop = 0;
       document.getElementsByTagName('body')[0].scrollTop = 0;
     }
+    
+    fetchPosts();
 });
