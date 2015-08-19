@@ -76,6 +76,8 @@ angular.module('katarinaApp', ['akoenig.deckgrid'])
       
       document.getElementsByClassName('posts')[0].scrollTop = 0;
       document.getElementsByTagName('body')[0].scrollTop = 0;
+      
+      ga('send', 'event', 'facet', 'click', facet.name);
     }
     
     fetchPosts();
